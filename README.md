@@ -6,6 +6,10 @@ A sleek, touch-based Point of Sale (POS) form interface for Leema Furniture, a S
 
 In the project directory, you can run:
 
+### `npm install`
+
+Installs all the required dependencies for the project.
+
 ### `npm start`
 
 Runs the app in the development mode.\
