@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Leema Furniture POS Form Interface
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A sleek, touch-based Point of Sale (POS) form interface for Leema Furniture, a Sri Lankan furniture retail chain with 5 branches. This form is designed to be installed as a touch screen kiosk at the main branch, targeting walk-in customers. The collected data is stored in a structured cloud database for future use, including marketing and machine learning.
 
 ## Available Scripts
 
