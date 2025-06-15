@@ -41,7 +41,6 @@ export const createFurniture = async (req, res) => {
       contat_method,
       purpose,
       category,
-      date: new Date(),
     });
 
     res.status(201).json({

@@ -18,7 +18,7 @@ import pool from "../config/database.js";
       furnitureData;
     try {
       const result = await pool.query(
-        "INSERT INTO furnitures (name, phone, contat_method, purpose, category, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+        "INSERT INTO furnitures (name, phone, contat_method, purpose, category) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [name, phone, contat_method, purpose, category, date]
       );
       return result.rows[0];
