@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Button, 
@@ -7,22 +7,13 @@ import {
   TextField, 
   Typography, 
   FormControl, 
-  FormLabel, 
-  RadioGroup, 
-  FormControlLabel, 
-  Radio, 
-  Checkbox, 
-  FormGroup, 
-  Autocomplete,
   CircularProgress,
   Container,
   Paper,
   useTheme,
   alpha,
-  IconButton,
   Snackbar,
-  Alert,
-  Backdrop
+  Alert
 } from '@mui/material';
 import { motion, Easing } from 'framer-motion';
 import { useFormik } from 'formik';
@@ -42,16 +33,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import WeekendIcon from '@mui/icons-material/Weekend';
-import BedIcon from '@mui/icons-material/Bed';
-import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
-import ChairIcon from '@mui/icons-material/Chair';
-import KitchenIcon from '@mui/icons-material/Kitchen';
 import DeckIcon from '@mui/icons-material/Deck';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
@@ -135,13 +117,13 @@ const categoryData: ProductCategory[] = [
 
 // Category UI mapping
 const categories = [
-  { value: categoryData[0], label: 'Sofas', icon: <Box sx={{ fontSize: 32 }} component={WeekendIcon} /> },
-  { value: categoryData[1], label: 'Chairs', icon: <Box sx={{ fontSize: 32 }} component={ChairIcon} /> },
-  { value: categoryData[2], label: 'Tables', icon: <Box sx={{ fontSize: 32 }} component={TableRestaurantIcon} /> },
-  { value: categoryData[3], label: 'Beds', icon: <Box sx={{ fontSize: 32 }} component={BedIcon} /> },
-  { value: categoryData[4], label: 'Storage', icon: <Box sx={{ fontSize: 32 }} component={KitchenIcon} /> },
+  { value: categoryData[0], label: 'Sofas', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
+  { value: categoryData[1], label: 'Chairs', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
+  { value: categoryData[2], label: 'Tables', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
+  { value: categoryData[3], label: 'Beds', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
+  { value: categoryData[4], label: 'Storage', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
   { value: categoryData[5], label: 'Outdoor', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
-  { value: categoryData[6], label: 'Others', icon: <Box sx={{ fontSize: 32 }} component={MoreHorizIcon} /> },
+  { value: categoryData[6], label: 'Others', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
 ];
 
 // Part 1 of the PremiumCustomerForm component
@@ -153,7 +135,7 @@ const PremiumCustomerForm: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info'>('success');
-  const [exportUrl, setExportUrl] = useState<string | null>(null);
+  // Removed unused state variables
   
   const totalSteps = 5;
   
