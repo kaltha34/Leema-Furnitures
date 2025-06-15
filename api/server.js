@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import pool from './src/config/database.js'
-import furnitureRoutes from './src/routes/customers.js'
+import customerRoutes from './src/routes/customers.js'
 import errorHandling from "./src/middlewares/middleware.js"
 import createCustomerTable from "./src/data/createCustomerTable.js"
 
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json())
 
 //Routes
-app.use('/api/furnitures', furnitureRoutes);
+app.use('/api/customers', customerRoutes);
 
 // Error handling middleware
 app.use(errorHandling)

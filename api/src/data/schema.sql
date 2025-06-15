@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS furnitures (
     purpose VARCHAR(100) NOT NULL,
     category VARCHAR(100) NOT NULL,
     delivery_location VARCHAR(255) DEFAULT NULL,
-    delivery_location VARCHAR(50) DEFAULT 'main-branch',
+    branch VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

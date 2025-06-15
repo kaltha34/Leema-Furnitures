@@ -25,7 +25,7 @@ export const getAllCustomers = async (req, res) => {
 // Create new customer
 export const createNewCustomer = async (req, res) => {
   try {
-    const { name, phone, contat_method, purpose, category, delivery_location, branch } = req.body;
+    const { name, phone, contact_method, purpose, category, delivery_location, branch } = req.body;
 
     // Validation
     if (!phone || !name || !contact_method || !purpose || !category) {
@@ -38,7 +38,7 @@ export const createNewCustomer = async (req, res) => {
     const newCustomer = await createCustomerService({
       name,
       phone,
-      contat_method,
+      contact_method,
       purpose,
       category,
       delivery_location, 

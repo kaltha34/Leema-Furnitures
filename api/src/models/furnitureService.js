@@ -14,12 +14,12 @@ import pool from "../config/database.js";
 
   // Create new customer
   export const createCustomerService = async (furnitureData) => {
-    const { name, phone, contat_method, purpose, category, date } =
+    const { name, phone, contact_method, purpose, category, delivery_location, branch} =
       furnitureData;
     try {
       const result = await pool.query(
-        "INSERT INTO customers (name, phone, contat_method, purpose, category, delivery_location, branch ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-        [name, phone, contat_method, purpose, category,delivery_location, branch]
+        "INSERT INTO customers (name, phone, contact_method, purpose, category, delivery_location, branch ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [name, phone, contact_method, purpose, category,delivery_location, branch]
       );
       return result.rows[0];
     } catch (error) {
