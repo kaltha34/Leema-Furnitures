@@ -9,7 +9,7 @@ import createFurnitureTable from "./src/data/createFurnitureTable.js"
 dotenv.config();
 
 const app = express();
-const port = process.env.PPORT || 3001;
+const port = process.env.PPORT || 5000;
 
 // Middleware
 app.use(cors());
