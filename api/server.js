@@ -1,7 +1,8 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-import { Pool } from 'pg'
+import pool from './src/config/database.js'
+import furnitureRoutes from './src/routes/furnitures.js'
 
 
 dotenv.config();
@@ -9,24 +10,23 @@ dotenv.config();
 const app = express();
 const port = process.env.PPORT || 3001;
 
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-});
-
 // Middleware
-app.use(express.json())
 app.use(cors());
+app.use(express.json())
 
+app.use('/api/furnitures', furnitureRoutes);
+
+// Test pg connection
+app.get("/", async(req, res) => {
+  const result = await pool.query("SELECT current_database()")
+  res.send(`The database name is: ${result.rows[0].current_database}`)
+})
+
+// Server running
 app.listen(port, () => {
   console.log(`Server is running on port: ${port} `);
 });
 
-pool.connect()
-.then(() => console.log("Database connected"))
-.catch((err) => console.log("Database connection faild", err))
+
 
 
