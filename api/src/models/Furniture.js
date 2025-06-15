@@ -1,7 +1,7 @@
 import pool from "../config/database";
 
   // Get all furnitures
-  export const findAllFurnituresService = async() => {
+  export const getAllFurnituresService = async() => {
     try {
       const result = await pool.query(
         "SELECT * FROM furnitures ORDER BY id ASC"
