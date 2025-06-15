@@ -3,7 +3,7 @@ import {
   getAllFurnitures,
   createFurniture,
   deleteFurniture,
-} from "../controllers/furnituresController";
+} from "../controllers/furnituresController.js";
 
 const router = express.Router();
 

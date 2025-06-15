@@ -1,4 +1,4 @@
-import pool from "../config/database";
+import pool from "../config/database.js";
 
   // Get all furnitures
   export const getAllFurnituresService = async() => {
