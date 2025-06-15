@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, AppBar, Toolbar, Typography, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import logo from '../../logo.png';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -18,13 +19,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Toolbar>
           <Box
             component="img"
-            src="logo.png"
+            src={logo}
             alt="Leema Furniture"
-            sx={{ height: 50, mr: 2, display: { xs: 'none', sm: 'block' } }}
+            sx={{ 
+              height: 60, 
+              display: 'block',
+              objectFit: 'contain',
+              verticalAlign: 'middle',
+              flexGrow: 1,
+              mx: 'auto'
+            }}
           />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'primary.main', fontWeight: 600 }}>
-            Leema Furniture
-          </Typography>
         </Toolbar>
       </StyledAppBar>
       
