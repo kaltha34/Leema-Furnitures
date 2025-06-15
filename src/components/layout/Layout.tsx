@@ -18,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Toolbar>
           <Box
             component="img"
-            src="/logo.png"
+            src="logo.png"
             alt="Leema Furniture"
             sx={{ height: 50, mr: 2, display: { xs: 'none', sm: 'block' } }}
           />

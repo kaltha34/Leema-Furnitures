@@ -15,10 +15,10 @@ interface ContactMethodStepProps {
 
 const ContactMethodStep: React.FC<ContactMethodStepProps> = ({ formik, onNext, onBack }) => {
   const contactMethods = [
-    { value: 'WhatsApp', label: 'WhatsApp', icon: <WhatsAppIcon sx={{ fontSize: 40 }} /> },
-    { value: 'SMS', label: 'SMS', icon: <SmsIcon sx={{ fontSize: 40 }} /> },
-    { value: 'Call', label: 'Call', icon: <CallIcon sx={{ fontSize: 40 }} /> },
-    { value: 'No Contact', label: 'No Contact', icon: <DoNotDisturbIcon sx={{ fontSize: 40 }} /> },
+    { value: 'WhatsApp', label: 'WhatsApp', icon: <Box sx={{ fontSize: 40 }} component={WhatsAppIcon} /> },
+    { value: 'SMS', label: 'SMS', icon: <Box sx={{ fontSize: 40 }} component={SmsIcon} /> },
+    { value: 'Call', label: 'Call', icon: <Box sx={{ fontSize: 40 }} component={CallIcon} /> },
+    { value: 'No Contact', label: 'No Contact', icon: <Box sx={{ fontSize: 40 }} component={DoNotDisturbIcon} /> },
   ];
 
   const handleSelect = (value: string) => {

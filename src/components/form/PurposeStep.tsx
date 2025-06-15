@@ -19,27 +19,27 @@ const PurposeStep: React.FC<PurposeStepProps> = ({ formik, onNext, onBack }) => 
     { 
       value: 'Just browsing', 
       label: 'Just browsing', 
-      icon: <SearchIcon sx={{ fontSize: 40 }} /> 
+      icon: <Box sx={{ fontSize: 40 }} component={SearchIcon} /> 
     },
     { 
       value: 'Looking for a specific item', 
       label: 'Looking for a specific item', 
-      icon: <ShoppingCartIcon sx={{ fontSize: 40 }} /> 
+      icon: <Box sx={{ fontSize: 40 }} component={ShoppingCartIcon} /> 
     },
     { 
       value: 'Interior furnishing consultation', 
       label: 'Interior furnishing consultation', 
-      icon: <DesignServicesIcon sx={{ fontSize: 40 }} /> 
+      icon: <Box sx={{ fontSize: 40 }} component={DesignServicesIcon} /> 
     },
     { 
       value: 'Urgent purchase', 
       label: 'Urgent purchase', 
-      icon: <PriorityHighIcon sx={{ fontSize: 40 }} /> 
+      icon: <Box sx={{ fontSize: 40 }} component={PriorityHighIcon} /> 
     },
     { 
       value: 'Delivery inquiry', 
       label: 'Delivery inquiry', 
-      icon: <LocalShippingIcon sx={{ fontSize: 40 }} /> 
+      icon: <Box sx={{ fontSize: 40 }} component={LocalShippingIcon} /> 
     },
   ];
 

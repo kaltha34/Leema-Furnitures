@@ -82,10 +82,10 @@ const initialValues = {
 
 // Contact method options
 const contactMethods = [
-  { value: 'WhatsApp' as ContactMethod, label: 'WhatsApp', icon: <WhatsAppIcon sx={{ fontSize: 32, color: '#25D366' }} /> },
-  { value: 'SMS' as ContactMethod, label: 'SMS', icon: <SmsIcon sx={{ fontSize: 32, color: '#2196F3' }} /> },
-  { value: 'Call' as ContactMethod, label: 'Phone Call', icon: <CallIcon sx={{ fontSize: 32, color: '#4CAF50' }} /> },
-  { value: 'No Contact' as ContactMethod, label: 'No Contact', icon: <DoNotDisturbIcon sx={{ fontSize: 32, color: '#757575' }} /> },
+  { value: 'WhatsApp' as ContactMethod, label: 'WhatsApp', icon: <Box sx={{ fontSize: 32, color: '#25D366' }} component={WhatsAppIcon} /> },
+  { value: 'SMS' as ContactMethod, label: 'SMS', icon: <Box sx={{ fontSize: 32, color: '#2196F3' }} component={SmsIcon} /> },
+  { value: 'Call' as ContactMethod, label: 'Phone Call', icon: <Box sx={{ fontSize: 32, color: '#4CAF50' }} component={CallIcon} /> },
+  { value: 'No Contact' as ContactMethod, label: 'No Contact', icon: <Box sx={{ fontSize: 32, color: '#757575' }} component={DoNotDisturbIcon} /> },
 ];
 
 // Purpose of visit options
@@ -94,31 +94,31 @@ const purposes = [
     value: 'Just browsing' as VisitPurpose, 
     label: 'Just Browsing', 
     description: 'Looking around to see what\'s available',
-    icon: <SearchIcon sx={{ fontSize: 32 }} />
+    icon: <Box sx={{ fontSize: 32 }} component={SearchIcon} />
   },
   { 
     value: 'Looking for a specific item' as VisitPurpose, 
     label: 'Specific Item', 
     description: 'I know what I want to purchase',
-    icon: <ShoppingCartIcon sx={{ fontSize: 32 }} />
+    icon: <Box sx={{ fontSize: 32 }} component={ShoppingCartIcon} />
   },
   { 
     value: 'Interior furnishing consultation' as VisitPurpose, 
     label: 'Interior Consultation', 
     description: 'Need help designing my space',
-    icon: <DesignServicesIcon sx={{ fontSize: 32 }} />
+    icon: <Box sx={{ fontSize: 32 }} component={DesignServicesIcon} />
   },
   { 
     value: 'Urgent purchase' as VisitPurpose, 
     label: 'Urgent Purchase', 
     description: 'Need something right away',
-    icon: <ShoppingCartIcon sx={{ fontSize: 32 }} />
+    icon: <Box sx={{ fontSize: 32 }} component={ShoppingCartIcon} />
   },
   { 
     value: 'Delivery inquiry' as VisitPurpose, 
     label: 'Delivery Inquiry', 
     description: 'Questions about shipping and delivery',
-    icon: <LocalShippingIcon sx={{ fontSize: 32 }} />
+    icon: <Box sx={{ fontSize: 32 }} component={LocalShippingIcon} />
   },
 ];
 
@@ -135,13 +135,13 @@ const categoryData: ProductCategory[] = [
 
 // Category UI mapping
 const categories = [
-  { value: categoryData[0], label: 'Sofas', icon: <WeekendIcon sx={{ fontSize: 32 }} /> },
-  { value: categoryData[1], label: 'Chairs', icon: <ChairIcon sx={{ fontSize: 32 }} /> },
-  { value: categoryData[2], label: 'Tables', icon: <TableRestaurantIcon sx={{ fontSize: 32 }} /> },
-  { value: categoryData[3], label: 'Beds', icon: <BedIcon sx={{ fontSize: 32 }} /> },
-  { value: categoryData[4], label: 'Storage', icon: <KitchenIcon sx={{ fontSize: 32 }} /> },
-  { value: categoryData[5], label: 'Outdoor', icon: <DeckIcon sx={{ fontSize: 32 }} /> },
-  { value: categoryData[6], label: 'Others', icon: <MoreHorizIcon sx={{ fontSize: 32 }} /> },
+  { value: categoryData[0], label: 'Sofas', icon: <Box sx={{ fontSize: 32 }} component={WeekendIcon} /> },
+  { value: categoryData[1], label: 'Chairs', icon: <Box sx={{ fontSize: 32 }} component={ChairIcon} /> },
+  { value: categoryData[2], label: 'Tables', icon: <Box sx={{ fontSize: 32 }} component={TableRestaurantIcon} /> },
+  { value: categoryData[3], label: 'Beds', icon: <Box sx={{ fontSize: 32 }} component={BedIcon} /> },
+  { value: categoryData[4], label: 'Storage', icon: <Box sx={{ fontSize: 32 }} component={KitchenIcon} /> },
+  { value: categoryData[5], label: 'Outdoor', icon: <Box sx={{ fontSize: 32 }} component={DeckIcon} /> },
+  { value: categoryData[6], label: 'Others', icon: <Box sx={{ fontSize: 32 }} component={MoreHorizIcon} /> },
 ];
 
 // Part 1 of the PremiumCustomerForm component

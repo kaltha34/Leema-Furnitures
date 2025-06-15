@@ -18,13 +18,13 @@ interface CategoryStepProps {
 
 const CategoryStep: React.FC<CategoryStepProps> = ({ formik, onNext, onBack }) => {
   const categories = [
-    { value: 'Sofas', label: 'Sofas', icon: <WeekendIcon sx={{ fontSize: 40 }} /> },
-    { value: 'Beds', label: 'Beds', icon: <BedIcon sx={{ fontSize: 40 }} /> },
-    { value: 'Dining Sets', label: 'Dining Sets', icon: <TableRestaurantIcon sx={{ fontSize: 40 }} /> },
-    { value: 'Office Furniture', label: 'Office Furniture', icon: <ChairIcon sx={{ fontSize: 40 }} /> },
-    { value: 'Wardrobes / Storage', label: 'Wardrobes / Storage', icon: <KitchenIcon sx={{ fontSize: 40 }} /> },
-    { value: 'Outdoor Furniture', label: 'Outdoor Furniture', icon: <DeckIcon sx={{ fontSize: 40 }} /> },
-    { value: 'Others', label: 'Others', icon: <MoreHorizIcon sx={{ fontSize: 40 }} /> },
+    { value: 'Sofas', label: 'Sofas', icon: <Box sx={{ fontSize: 40 }} component={WeekendIcon} /> },
+    { value: 'Beds', label: 'Beds', icon: <Box sx={{ fontSize: 40 }} component={BedIcon} /> },
+    { value: 'Dining Sets', label: 'Dining Sets', icon: <Box sx={{ fontSize: 40 }} component={TableRestaurantIcon} /> },
+    { value: 'Office Furniture', label: 'Office Furniture', icon: <Box sx={{ fontSize: 40 }} component={ChairIcon} /> },
+    { value: 'Wardrobes / Storage', label: 'Wardrobes / Storage', icon: <Box sx={{ fontSize: 40 }} component={KitchenIcon} /> },
+    { value: 'Outdoor Furniture', label: 'Outdoor Furniture', icon: <Box sx={{ fontSize: 40 }} component={DeckIcon} /> },
+    { value: 'Others', label: 'Others', icon: <Box sx={{ fontSize: 40 }} component={MoreHorizIcon} /> },
   ];
 
   const handleToggleCategory = (value: string) => {
