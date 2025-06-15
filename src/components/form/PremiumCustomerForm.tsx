@@ -36,6 +36,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import DeckIcon from '@mui/icons-material/Deck';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 // Validation schema
 const validationSchema = Yup.object({
