@@ -3,7 +3,8 @@ import cors from "cors"
 import dotenv from "dotenv"
 import pool from './src/config/database.js'
 import furnitureRoutes from './src/routes/furnitures.js'
-
+import errorHandling from "./src/middlewares/middleware.js"
+import createFurnitureTable from "./src/data/createFurnitureTable.js"
 
 dotenv.config();
 
@@ -14,7 +15,14 @@ const port = process.env.PPORT || 3001;
 app.use(cors());
 app.use(express.json())
 
+//Routes
 app.use('/api/furnitures', furnitureRoutes);
+
+// Error handling middleware
+app.use(errorHandling)
+
+// Create table before starting server
+createFurnitureTable()
 
 // Test pg connection
 app.get("/", async(req, res) => {

@@ -9,13 +9,13 @@ export const getAllFurnitures = async (req, res) => {
   try {
     const furnitures = await getAllFurnituresService();
     res.status(200).json({
-      success: true,
-      data: furnitures,
+      status: 200,
       message: "furnitures retrieved successfully",
+      data: furnitures,
     });
   } catch (error) {
     res.status(500).json({
-      success: false,
+      status: 500,
       message: "Error retrieving furnitures",
       error: error.message,
     });
@@ -30,8 +30,8 @@ export const createFurniture = async (req, res) => {
     // Validation
     if (!phone) {
       return res.status(400).json({
-        success: false,
-        message: "Required fielsd are missing",
+        status: 400,
+        message: "Required fields are missing",
       });
     }
 
@@ -44,13 +44,13 @@ export const createFurniture = async (req, res) => {
     });
 
     res.status(201).json({
-      success: true,
-      data: newFurniture,
+      status: 201,
       message: "Furniture created successfully",
+      data: newFurniture,
     });
   } catch (error) {
     res.status(500).json({
-      success: false,
+      status: 500,
       message: "Error creating furniture",
       error: error.message,
     });
@@ -66,19 +66,19 @@ export const deleteFurniture = async (req, res) => {
 
     if (!deletedFurniture) {
       return res.status(404).json({
-        success: false,
+        status: 404,
         message: "Furniture not found",
       });
     }
 
     res.status(200).json({
-      success: true,
-      data: deletedFurniture,
+      status: 200,
       message: "Furniture deleted successfully",
+      data: deletedFurniture,
     });
   } catch (error) {
     res.status(500).json({
-      success: false,
+      status: 500,
       message: "Error deleting Furniture",
       error: error.message,
     });
