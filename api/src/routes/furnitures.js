@@ -1,10 +1,14 @@
-import express from "express"
-import furnitureController from "../controllers/furnituresController"
+import express from "express";
+import {
+  getAllFurnitures,
+  createFurniture,
+  deleteFurniture,
+} from "../controllers/furnituresController";
 
 const router = express.Router();
 
-router.get('/', furnitureController.getFurnitures);
-router.post('/', furnitureController.createFurniture);
-router.delete('/:id', furnitureController.deleteFurniture);
+router.get("/", getAllFurnitures);
+router.post("/", createFurniture);
+router.delete("/:id", deleteFurniture);
 
 export default router;
