@@ -1,8 +1,7 @@
-const pool = require("../config/database");
+import pool from "../config/database";
 
-class Furniture {
   // Get all furnitures
-  static async findAllFurnituresService() {
+  export const findAllFurnituresService = async() => {
     try {
       const result = await pool.query(
         "SELECT * FROM furnitures ORDER BY id ASC"
@@ -14,7 +13,7 @@ class Furniture {
   }
 
   // Create new furniture
-  static async createFurnitureService(furnitureData) {
+  export const createFurnitureService = async (furnitureData) => {
     const { name, phone, contat_method, purpose, category, date } =
       furnitureData;
     try {
@@ -29,7 +28,7 @@ class Furniture {
   }
 
   // Delete user
-  static async deleteFurnitureService(id) {
+  export const deleteFurnitureService = async(id) => {
     try {
       const result = await pool.query(
         "DELETE FROM furnitures WHERE id = $1 RETURNING *",
@@ -40,6 +39,3 @@ class Furniture {
       throw error;
     }
   }
-}
-
-module.exports = User;
