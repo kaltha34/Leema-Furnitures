@@ -25,24 +25,35 @@ export const getAllCustomers = async (req, res) => {
 // Create new customer
 export const createNewCustomer = async (req, res) => {
   try {
-    const { name, phone, contact_method, purpose, category, delivery_location, branch } = req.body;
+    const {
+      name,
+      phoneNumber,
+      preferredContactMethod,
+      purposeOfVisit,
+      interestedCategories,
+      deliveryLocation,
+      branchId,
+      timestamp,
+    } = req.body;
 
     // Validation
-    if (!phone || !name || !contact_method || !purpose || !category) {
-      return res.status(400).json({
-        status: 400,
-        message: "Required fields are missing",
-      });
-    }
+    // if (!phone || !name || !contact_method || !purpose || !category) {
+    //   return res.status(400).json({
+    //     status: 400,
+    //     message: "Required fields are missing",
+    //   });
+    // }
+console.log('body', req.body);
 
     const newCustomer = await createCustomerService({
       name,
-      phone,
-      contact_method,
-      purpose,
-      category,
-      delivery_location, 
-      branch
+      phoneNumber,
+      preferredContactMethod,
+      purposeOfVisit,
+      interestedCategories,
+      deliveryLocation,
+      branchId,
+      timestamp,
     });
 
     res.status(201).json({

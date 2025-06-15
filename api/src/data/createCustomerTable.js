@@ -4,16 +4,16 @@ const createCustomerTable = async () => {
   const queryText = `
     CREATE TABLE IF NOT EXISTS customers (
     id SERIAL PRIMARY KEY,
+    customerId VARCHAR(100) NOT NULL,
     name VARCHAR(100) NOT NULL,
-    phone VARCHAR(15) NOT NULL,
-    contact_method VARCHAR(100) NOT NULL,
-    purpose VARCHAR(100) NOT NULL,
-    category VARCHAR(100) NOT NULL,
-    delivery_location VARCHAR(255) DEFAULT NULL,
-    branch VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  )
+    phoneNumber VARCHAR(15) NOT NULL,
+    preferredContactMethod VARCHAR(100) NOT NULL,
+    purposeOfVisit VARCHAR(100) NOT NULL,
+    interestedCategories JSONB NOT NULL, 
+    deliveryLocation VARCHAR(255) DEFAULT '',
+    branchId VARCHAR(50) DEFAULT 'main-branch',
+    timestamp VARCHAR(100)
+)
     `;
 
   try {
