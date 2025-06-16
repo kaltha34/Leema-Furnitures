@@ -109,49 +109,58 @@ export const saveCustomerData = async (data: CustomerData) => {
 };
 
 // Get all customer data
-export const getAllCustomers = (): Record<string, CustomerData> => {
-  const data = localStorage.getItem('leema_customers');
-  return data ? JSON.parse(data) : {};
+export const getAllCustomers = async (): Promise<Record<string, CustomerData>> => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/customers`);
+    return response.data || {};
+  } catch (error) {
+    console.error('Error fetching customers:', error);
+    throw error;
+  }
 };
 
 // Get customer by ID
-export const getCustomerById = (id: string): CustomerData | null => {
-  const allCustomers = getAllCustomers();
-  return allCustomers[id] || null;
-};
+// export const getCustomerById = (id: string): CustomerData | null => {
+//   const allCustomers = getAllCustomers();
+//   return allCustomers[id] || null;
+// };
 
 // Delete customer
-export const deleteCustomer = (id: string): boolean => {
+export const deleteCustomer = async (id: string): Promise<boolean> => {
   try {
-    const allCustomers = getAllCustomers();
-    if (!allCustomers[id]) return false;
-    
-    delete allCustomers[id];
-    localStorage.setItem('leema_customers', JSON.stringify(allCustomers));
+    await axios.delete(`${API_BASE_URL}/customers/${id}`);
     return true;
   } catch (error) {
-    console.error('Error deleting customer:', error);
-    return false;
+    console.error(`Error deleting customer ${id}:`, error);
+    throw error;
   }
 };
 
 // Export all customers to JSON
-export const exportCustomersToJson = (): string => {
+export const exportCustomersToJson = async (): Promise<string> => {
   try {
-    const customers = getAllCustomers();
+    // Get all customers from the API
+    const customers = await getAllCustomers();
+    
+    // Convert to JSON string with pretty formatting
     const jsonData = JSON.stringify(customers, null, 2);
+    
+    // Create a blob with the JSON data
     const blob = new Blob([jsonData], { type: 'application/json' });
+    
+    // Create and return a URL for the blob
     return URL.createObjectURL(blob);
   } catch (error) {
     console.error('Error exporting customers to JSON:', error);
-    throw new Error('Failed to export customers');
+    throw error;
   }
 };
 
 // Export all customers to CSV format for Excel
-export const exportCustomersToCSV = (): string => {
+export const exportCustomersToCSV = async (): Promise<string> => {
   try {
-    const customers = getAllCustomers();
+    // Get all customers from the API
+    const customers = await getAllCustomers();
     
     // Add BOM for Excel to recognize UTF-8
     let csvContent = '\ufeff';
@@ -161,59 +170,62 @@ export const exportCustomersToCSV = (): string => {
     
     // Add each customer as a row
     Object.entries(customers).forEach(([id, customer]) => {
-      // Format the categories as a comma-separated list
+      // Format the categories as a semicolon-separated list
       const categories = customer.interestedCategories
         .map(cat => cat.name)
         .join('; ');
       
       // Format the timestamp as a readable date
-      const date = customer.timestamp ? new Date(customer.timestamp).toLocaleString() : '';
+      const date = customer.timestamp ? new Date(customer.timestamp).toISOString() : '';
       
-      // Escape fields that might contain commas
-      const escapeCsvField = (field: string) => {
-        if (field && (field.includes(',') || field.includes('"') || field.includes('\n'))) {
+      // Escape fields that might contain commas or special characters
+      const escapeCsvField = (field: string | undefined) => {
+        if (!field) return '';
+        if (field.includes(',') || field.includes('"') || field.includes('\n')) {
           return `"${field.replace(/"/g, '""')}"`; // Escape quotes with double quotes
         }
-        return field || '';
+        return field;
       };
       
       // Create the CSV row
       const row = [
         escapeCsvField(id),
-        escapeCsvField(customer.name || ''),
+        escapeCsvField(customer.name),
         escapeCsvField(customer.phoneNumber),
         escapeCsvField(customer.preferredContactMethod),
         escapeCsvField(customer.purposeOfVisit),
         escapeCsvField(categories),
-        escapeCsvField(customer.deliveryLocation || ''),
-        escapeCsvField(customer.branchId || ''),
+        escapeCsvField(customer.deliveryLocation),
+        escapeCsvField(customer.branchId),
         escapeCsvField(date)
       ].join(',');
       
       csvContent += row + '\r\n'; // Use Windows-style line endings for Excel
     });
     
-    // Create a downloadable blob with Excel MIME type
-    const blob = new Blob([csvContent], { type: 'application/vnd.ms-excel;charset=utf-8' });
+    // Create a blob with the CSV data
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Create and return a URL for the blob
     return URL.createObjectURL(blob);
   } catch (error) {
     console.error('Error exporting customers to CSV:', error);
-    throw new Error('Failed to export customers to CSV');
+    throw error;
   }
-};
+};;
 
 // Initialize the service
-export const initializeStorageService = (): void => {
-  // Check if localStorage is available
-  try {
-    localStorage.setItem('leema_test', 'test');
-    localStorage.removeItem('leema_test');
-    console.log('Local storage service initialized successfully');
-  } catch (error) {
-    console.error('Local storage is not available:', error);
-  }
-};
+// export const initializeStorageService = (): void => {
+//   // Check if localStorage is available
+//   try {
+//     localStorage.setItem('leema_test', 'test');
+//     localStorage.removeItem('leema_test');
+//     console.log('Local storage service initialized successfully');
+//   } catch (error) {
+//     console.error('Local storage is not available:', error);
+//   }
+// };
 
-// Initialize the service when imported
-// Call the function immediately to ensure localStorage is available
-initializeStorageService();
+// // Initialize the service when imported
+// // Call the function immediately to ensure localStorage is available
+// initializeStorageService();
