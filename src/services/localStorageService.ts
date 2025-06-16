@@ -1,6 +1,8 @@
 // Local Storage Service for Leema Furniture POS
 // This service replaces Firebase with browser localStorage and optional JSON Server integration
 
+import axios from "axios"
+
 // Types from the original Firebase service
 export type ContactMethod = 'WhatsApp' | 'SMS' | 'Call' | 'No Contact';
 export type VisitPurpose = 'Just browsing' | 'Looking for a specific item' | 'Interior furnishing consultation' | 'Urgent purchase' | 'Delivery inquiry';
@@ -16,6 +18,7 @@ export interface ProductCategory {
 export type ProductCategoryType = 'Sofas' | 'Beds' | 'Dining Sets' | 'Office Furniture' | 'Wardrobes / Storage' | 'Outdoor Furniture' | 'Others';
 
 export interface CustomerData {
+  id?: string;
   name?: string;
   phoneNumber: string;
   preferredContactMethod: ContactMethod;
@@ -26,13 +29,15 @@ export interface CustomerData {
   timestamp?: number;
 }
 
+const API_BASE_URL = 'http://localhost:5000/api'
+
 // Generate a unique ID for each customer entry
 const generateId = (): string => {
   return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
 
 // Save customer data to localStorage
-export const saveCustomerData = async (data: CustomerData): Promise<string> => {
+export const saveCustomerData = async (data: CustomerData) => {
   try {
     console.log('Saving customer data:', data);
     
@@ -61,48 +66,42 @@ export const saveCustomerData = async (data: CustomerData): Promise<string> => {
     };
     
     // Get existing data
-    let existingData: Record<string, CustomerData> = {};
-    try {
-      const existingDataString = localStorage.getItem('leema_customers');
-      if (existingDataString) {
-        existingData = JSON.parse(existingDataString);
-        console.log('Existing data loaded successfully');
-      } else {
-        console.log('No existing data found, creating new storage');
-      }
-    } catch (parseError) {
-      console.error('Error parsing existing data, creating new storage:', parseError);
-      // Continue with empty object if parsing fails
-    }
+    // let existingData: Record<string, CustomerData> = {};
+    // try {
+    //   const existingDataString = localStorage.getItem('leema_customers');
+    //   if (existingDataString) {
+    //     existingData = JSON.parse(existingDataString);
+    //     console.log('Existing data loaded successfully');
+    //   } else {
+    //     console.log('No existing data found, creating new storage');
+    //   }
+    // } catch (parseError) {
+    //   console.error('Error parsing existing data, creating new storage:', parseError);
+    //   // Continue with empty object if parsing fails
+    // }
     
-    // Generate ID and add new customer
-    const id = generateId();
-    existingData[id] = customerData;
+    // // Generate ID and add new customer
+    // const id = generateId();
+    // existingData[id] = customerData;
     
-    // Save back to localStorage
-    try {
-      localStorage.setItem('leema_customers', JSON.stringify(existingData));
-      console.log('Data saved to localStorage successfully');
-    } catch (storageError) {
-      console.error('Error saving to localStorage:', storageError);
-      throw new Error('Failed to save to localStorage. Storage may be full or unavailable.');
-    }
+    // // Save back to localStorage
+    // try {
+    //   localStorage.setItem('leema_customers', JSON.stringify(existingData));
+    //   console.log('Data saved to localStorage successfully');
+    // } catch (storageError) {
+    //   console.error('Error saving to localStorage:', storageError);
+    //   throw new Error('Failed to save to localStorage. Storage may be full or unavailable.');
+    // }
     
     // Optional: Send to a backend server if available
     try {
       // This could be replaced with a real API endpoint
-      // await fetch('http://localhost:3001/customers', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ id, ...customerData })
-      // });
-      console.log('Customer data saved locally with ID:', id);
+      const response = await axios.post(`${API_BASE_URL}/customers`, customerData);
     } catch (error) {
       console.warn('Could not sync with backend server:', error);
       // Continue anyway since we saved to localStorage
     }
     
-    return id;
   } catch (error) {
     console.error('Error saving customer data:', error);
     throw error; // Rethrow the original error for better debugging

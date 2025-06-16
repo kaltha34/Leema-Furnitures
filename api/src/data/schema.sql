@@ -1,26 +1,19 @@
--- -- Create furnitures table
--- CREATE TABLE IF NOT EXISTS furnitures (
---     id SERIAL PRIMARY KEY,
---     name VARCHAR(100) NOT NULL,
---     phone VARCHAR(15) NOT NULL,
---     preferredContactMethod VARCHAR(100) NOT NULL,
---     purposeOfVisit VARCHAR(100) NOT NULL,
---     category VARCHAR(100) NOT NULL,
---     deliveryLocation VARCHAR(255) DEFAULT NULL,
---     branchId VARCHAR(50),
---     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
--- );
-
 -- Create furnitures table
 CREATE TABLE IF NOT EXISTS customers (
-    id SERIAL PRIMARY KEY,
-    customerId VARCHAR(100) NOT NULL,
+    id VARCHAR(50) PRIMARY KEY DEFAULT (
+        LOWER(
+          SUBSTRING(CAST(FLOOR(EXTRACT(EPOCH FROM NOW()) * 1000) AS TEXT) || 
+          LPAD(FLOOR(RANDOM() * 100000000)::TEXT, 8, '0')
+          FROM 3)
+        )
+      ),
     name VARCHAR(100) NOT NULL,
-    phoneNumber VARCHAR(15) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
     preferredContactMethod VARCHAR(100) NOT NULL,
     purposeOfVisit VARCHAR(100) NOT NULL,
-    interestedCategories JSONB NOT NULL, -- Store array of category objects
-    deliveryLocation VARCHAR(255) DEFAULT '',
-    branchId VARCHAR(50) DEFAULT 'main-branch',
-    timestamp VARCHAR(100)
+    category VARCHAR(100) NOT NULL,
+    deliveryLocation VARCHAR(255) DEFAULT NULL,
+    branchId VARCHAR(50),
+    timestamp BIGINT,
+    interestedCategories JSONB NOT NULL, 
 );

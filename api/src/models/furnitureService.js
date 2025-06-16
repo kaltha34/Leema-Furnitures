@@ -19,21 +19,21 @@ export const createCustomerService = async (customerData) => {
     purposeOfVisit,
     interestedCategories,
     deliveryLocation,
-    timestamp,
     branchId,
+    timestamp,
   } = customerData;
   try {
     const result = await pool.query(
-      "INSERT INTO customers (name, phoneNumber, preferredContactMethod, purposeOfVisit, interestedCategories, deliveryLocation, timestamp, branchId, ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      "INSERT INTO customers (name, phoneNumber, preferredContactMethod, purposeOfVisit, interestedCategories, deliveryLocation, branchId, timestamp ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
       [
         name,
         phoneNumber,
         preferredContactMethod,
         purposeOfVisit,
-        interestedCategories,
+        JSON.stringify(interestedCategories),
         deliveryLocation,
         branchId,
-        timestamp,
+        timestamp
       ]
     );
     return result.rows[0];

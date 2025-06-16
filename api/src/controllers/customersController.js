@@ -64,7 +64,7 @@ console.log('body', req.body);
   } catch (error) {
     res.status(500).json({
       status: 500,
-      message: "Error creating furniture",
+      message: "Error creating customer",
       error: error.message,
     });
   }
