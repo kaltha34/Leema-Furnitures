@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leema Furnitures - Invoice</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #8B5A2B;
+            --secondary-color: #A67C52;
+            --accent-color: #D4AF37;
+            --text-color: #333333;
+            --light-bg: #F9F5F0;
+            --white: #FFFFFF;
+            --gray: #666666;
+            --light-gray: #EEEEEE;
+            --success: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .invoice-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: var(--white);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .invoice-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 30px;
+            position: relative;
+        }
+        
+        .invoice-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: var(--accent-color);
+        }
+        
+        .invoice-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .invoice-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .invoice-number {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .invoice-date {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .invoice-date div {
+            flex: 1;
+        }
+        
+        .invoice-date h4 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+        
+        .invoice-date p {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .invoice-body {
+            padding: 30px;
+        }
+        
+        .client-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .client-details div {
+            flex: 1;
+        }
+        
+        .client-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .client-details p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--gray);
+        }
+        
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .invoice-table th {
+            background-color: var(--light-bg);
+            text-align: left;
+            padding: 12px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .invoice-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--light-gray);
+            font-size: 15px;
+        }
+        
+        .invoice-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .service-description {
+            width: 60%;
+        }
+        
+        .service-description ul {
+            margin-top: 5px;
+            padding-left: 20px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .amount {
+            text-align: right;
+        }
+        
+        .subtotal-row td {
+            padding-top: 20px;
+            font-weight: 500;
+        }
+        
+        .discount-row {
+            color: var(--success);
+        }
+        
+        .total-row td {
+            font-weight: 700;
+            font-size: 18px;
+            padding-top: 15px;
+            color: var(--primary-color);
+        }
+        
+        .payment-details {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .payment-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .payment-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .payment-info div {
+            display: flex;
+        }
+        
+        .payment-info span:first-child {
+            font-weight: 500;
+            width: 120px;
+        }
+        
+        .terms {
+            margin-bottom: 30px;
+        }
+        
+        .terms h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .terms ol {
+            padding-left: 20px;
+            color: var(--gray);
+        }
+        
+        .invoice-footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--light-gray);
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .thank-you {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        @media print {
+            body {
+                background-color: var(--white);
+                padding: 0;
+            }
+            
+            .invoice-container {
+                box-shadow: none;
+                margin: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="invoice-title">
+                <div>
+                    <h1>INVOICE</h1>
+                    <div class="invoice-number">Invoice #: LF-2025-06-15</div>
+                </div>
+            </div>
+            <div class="invoice-date">
+                <div>
+                    <h4>DATE ISSUED</h4>
+                    <p>June 15, 2025</p>
+                </div>
+                <div>
+                    <h4>DUE DATE</h4>
+                    <p>July 30, 2025</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="invoice-body">
+            <div class="client-details">
+                <div>
+                    <h3>From</h3>
+                    <p>
+                        <strong>Katisa Technologies</strong><br>
+                        Kalhara Thabrew<br>
+                        katisatechnologies@gmail.com<br>
+                        +94 72 595 0375
+                    </p>
+                </div>
+                <div>
+                    <h3>To</h3>
+                    <p>
+                        <strong>Leema Furnitures</strong><br>
+                        Main Street<br>
+                        Kegalle<br>
+                        Sri Lanka
+                    </p>
+                </div>
+            </div>
+            
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th class="service-description">Description</th>
+                        <th class="amount">Amount (LKR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="service-description">
+                            <strong>Leema Furnitures React Application Development</strong>
+                        </td>
+                        <td class="amount"></td>
+                    </tr>
+                    <tr>
+                        <td class="service-description">
+                            <span style="padding-left: 20px;">Customer Registration System</span>
+                        </td>
+                        <td class="amount">15,000.00</td>
+                    </tr>
+                    <tr>
+                        <td class="service-description">
+                            <span style="padding-left: 20px;">Multi-step Form Implementation</span>
+                        </td>
+                        <td class="amount">12,000.00</td>
+                    </tr>
+                    <tr>
+                        <td class="service-description">
+                            <span style="padding-left: 20px;">Admin Dashboard</span>
+                        </td>
+                        <td class="amount">14,000.00</td>
+                    </tr>
+                    <tr>
+                        <td class="service-description">
+                            <span style="padding-left: 20px;">Data Management & Export</span>
+                        </td>
+                        <td class="amount">8,000.00</td>
+                    </tr>
+                    <tr>
+                        <td class="service-description">
+                            <span style="padding-left: 20px;">Touch Screen Optimization</span>
+                        </td>
+                        <td class="amount">9,000.00</td>
+                    </tr>
+                    <tr>
+                        <td class="service-description">
+                            <span style="padding-left: 20px;">Responsive UI Design</span>
+                        </td>
+                        <td class="amount">7,000.00</td>
+                    </tr>
+                    <tr>
+                        <td class="service-description">
+                            <span style="padding-left: 20px;">Deployment & Configuration</span>
+                        </td>
+                        <td class="amount">5,000.00</td>
+                    </tr>
+                    <tr class="subtotal-row">
+                        <td>Subtotal</td>
+                        <td class="amount">70,000.00</td>
+                    </tr>
+                    <tr class="discount-row">
+                        <td>Special Discount (28.57%)</td>
+                        <td class="amount">-20,000.00</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total Due</td>
+                        <td class="amount">50,000.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="payment-details">
+                <h3>Payment Details</h3>
+                <div class="payment-info">
+                    <div>
+                        <span>Bank:</span>
+                        <span>Commercial Bank, Kegalle</span>
+                    </div>
+                    <div>
+                        <span>Account Number:</span>
+                        <span>8014994131</span>
+                    </div>
+                    <div>
+                        <span>Account Name:</span>
+                        <span>Kalhara Thabrew</span>
+                    </div>
+                    <div>
+                        <span>Branch:</span>
+                        <span>Kegalle</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="terms">
+                <h3>Terms & Conditions</h3>
+                <ol>
+                    <li>Payment of advance amount (20% of total) is due within 15 days of invoice date</li>
+                    <li>Balance payment (80% of total) is due after setup</li>
+                    <li>This invoice includes all development work as specified in the project scope</li>
+                    <li>Additional feature requests will be billed separately</li>
+                    <li>Life Time of technical support included after delivery</li>
+                </ol>
+            </div>
+            
+            <div class="thank-you">
+                Thank you for your business!
+            </div>
+        </div>
+        
+        <div class="invoice-footer">
+            <p>This is a computer-generated invoice and does not require a signature</p>
+        </div>
+    </div>
+</body>
+</html>
