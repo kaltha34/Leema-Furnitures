@@ -17,7 +17,8 @@ import {
   Chip,
   Stack,
   TextField,
-  InputAdornment
+  InputAdornment,
+  CircularProgress
 } from '@mui/material';
 import { 
   Delete as DeleteIcon, 
@@ -28,7 +29,8 @@ import {
 import { getAllCustomers, deleteCustomer, exportCustomersToCSV, exportCustomersToJson, CustomerData } from '../services/localStorageService';
 
 const AdminPage: React.FC = () => {
-  const [customers, setCustomers] = useState<Record<string, CustomerData>>({});
+  const [customers, setCustomers] = useState<CustomerData[]>([]);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -37,18 +39,53 @@ const AdminPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [totalCustomers, setTotalCustomers] = useState(0);
 
-  // Load customer data
-  const loadCustomers = () => {
+  // Load customer data from API
+  const loadCustomers = async () => {
+    setLoading(true);
     try {
-      const data = getAllCustomers();
-      setCustomers(data);
-      setTotalCustomers(Object.keys(data).length);
-      console.log('Loaded customer data:', data);
+      const response = await getAllCustomers();
+      
+      // Handle the new API response structure
+      let customerData: CustomerData[] = [];
+      
+      if (response && typeof response === 'object') {
+        // Check if it's the new API format with status, message, data
+        if ('status' in response && 'data' in response && Array.isArray(response.data)) {
+          customerData = response.data.map((customer: any) => ({
+            id: customer.id,
+            name: customer.name,
+            phoneNumber: customer.phonenumber, // Note: API uses lowercase
+            preferredContactMethod: customer.preferredcontactmethod,
+            purposeOfVisit: customer.purposeofvisit,
+            interestedCategories: customer.interestedcategories || [],
+            deliveryLocation: customer.deliverylocation,
+            branchId: customer.branchid,
+            timestamp: parseInt(customer.timestamp)
+          }));
+        } 
+        // Handle old format (Record<string, CustomerData>)
+        else if (!Array.isArray(response)) {
+          customerData = Object.entries(response).map(([id, customer]) => ({
+            ...customer as CustomerData,
+            id: id
+          }));
+        }
+        // Handle direct array format
+        else if (Array.isArray(response)) {
+          customerData = response;
+        }
+      }
+      
+      setCustomers(customerData);
+      setTotalCustomers(customerData.length);
+      console.log('Loaded customer data:', customerData);
     } catch (error) {
       console.error('Error loading customers:', error);
       setSnackbarMessage('Failed to load customer data');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,10 +106,11 @@ const AdminPage: React.FC = () => {
   };
 
   // Handle customer deletion
-  const handleDeleteCustomer = (id: string) => {
+  const handleDeleteCustomer = async (id: string) => {
     try {
-      deleteCustomer(id);
-      loadCustomers(); // Reload the data
+      setLoading(true);
+      await deleteCustomer(id);
+      await loadCustomers(); // Reload the data
       setSnackbarMessage('Customer deleted successfully');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
@@ -81,13 +119,16 @@ const AdminPage: React.FC = () => {
       setSnackbarMessage('Failed to delete customer');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handle export to CSV (Excel)
-  const handleExportToCSV = () => {
+  const handleExportToCSV = async () => {
     try {
-      const url = exportCustomersToCSV();
+      setLoading(true);
+      const url = await exportCustomersToCSV();
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', `leema-customers-${new Date().toISOString().split('T')[0]}.csv`);
@@ -103,13 +144,16 @@ const AdminPage: React.FC = () => {
       setSnackbarMessage('Failed to export customer data to CSV');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handle export to JSON
-  const handleExportToJSON = () => {
+  const handleExportToJSON = async () => {
     try {
-      const url = exportCustomersToJson();
+      setLoading(true);
+      const url = await exportCustomersToJson();
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', `leema-customers-${new Date().toISOString().split('T')[0]}.json`);
@@ -125,11 +169,13 @@ const AdminPage: React.FC = () => {
       setSnackbarMessage('Failed to export customer data to JSON');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Filter customers based on search term
-  const filteredCustomers = Object.entries(customers).filter(([id, customer]) => {
+  const filteredCustomers = customers.filter((customer) => {
     const searchTermLower = searchTerm.toLowerCase();
     return (
       customer.name?.toLowerCase().includes(searchTermLower) ||
@@ -170,6 +216,7 @@ const AdminPage: React.FC = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ minWidth: 300 }}
+          disabled={loading}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -182,16 +229,18 @@ const AdminPage: React.FC = () => {
         <Stack direction="row" spacing={2}>
           <Button 
             variant="outlined" 
-            startIcon={<RefreshIcon />}
+            startIcon={loading ? <CircularProgress size={16} /> : <RefreshIcon />}
             onClick={loadCustomers}
+            disabled={loading}
           >
             Refresh
           </Button>
           <Button 
             variant="contained" 
             color="primary" 
-            startIcon={<FileDownloadIcon />}
+            startIcon={loading ? <CircularProgress size={16} /> : <FileDownloadIcon />}
             onClick={handleExportToCSV}
+            disabled={loading}
             sx={{ 
               background: 'linear-gradient(45deg, #8b5a2b 30%, #a67c52 90%)',
               '&:hover': {
@@ -204,8 +253,9 @@ const AdminPage: React.FC = () => {
           <Button 
             variant="outlined" 
             color="primary" 
-            startIcon={<FileDownloadIcon />}
+            startIcon={loading ? <CircularProgress size={16} /> : <FileDownloadIcon />}
             onClick={handleExportToJSON}
+            disabled={loading}
           >
             Export to JSON
           </Button>
@@ -228,14 +278,25 @@ const AdminPage: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatedCustomers.length > 0 ? (
-                paginatedCustomers.map(([id, customer]) => (
-                  <TableRow key={id} hover>
-                    <TableCell sx={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis' }}>{id}</TableCell>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={8} align="center" sx={{ py: 3 }}>
+                    <CircularProgress />
+                    <Typography variant="body2" sx={{ mt: 2 }}>Loading customer data...</Typography>
+                  </TableCell>
+                </TableRow>
+              ) : paginatedCustomers.length > 0 ? (
+                paginatedCustomers.map((customer) => (
+                  <TableRow key={customer.id} hover>
+                    <TableCell sx={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {customer.id}
+                    </TableCell>
                     <TableCell>{customer.name || 'N/A'}</TableCell>
                     <TableCell>{customer.phoneNumber}</TableCell>
                     <TableCell>{customer.preferredContactMethod}</TableCell>
-                    <TableCell sx={{ maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis' }}>{customer.purposeOfVisit}</TableCell>
+                    <TableCell sx={{ maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {customer.purposeOfVisit}
+                    </TableCell>
                     <TableCell>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, maxWidth: 200 }}>
                         {customer.interestedCategories.map((category) => (
@@ -259,8 +320,9 @@ const AdminPage: React.FC = () => {
                     <TableCell>
                       <IconButton 
                         color="error" 
-                        onClick={() => handleDeleteCustomer(id)}
+                        onClick={() => handleDeleteCustomer(customer.id!)}
                         size="small"
+                        disabled={loading}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -298,7 +360,7 @@ const AdminPage: React.FC = () => {
             <Typography variant="body1" sx={{ mt: 1 }}>
               Most Popular Category: <strong>
                 {(() => {
-                  const categoryCount = Object.values(customers).reduce((acc, customer) => {
+                  const categoryCount = customers.reduce((acc, customer) => {
                     customer.interestedCategories.forEach(cat => {
                       acc[cat.name] = (acc[cat.name] || 0) + 1;
                     });
@@ -312,7 +374,7 @@ const AdminPage: React.FC = () => {
             <Typography variant="body1" sx={{ mt: 1 }}>
               Most Common Purpose: <strong>
                 {(() => {
-                  const purposeCount = Object.values(customers).reduce((acc, customer) => {
+                  const purposeCount = customers.reduce((acc, customer) => {
                     acc[customer.purposeOfVisit] = (acc[customer.purposeOfVisit] || 0) + 1;
                     return acc;
                   }, {} as Record<string, number>);
